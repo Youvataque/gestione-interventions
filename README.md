@@ -11,6 +11,12 @@ Un accès en lecture à la base de donnée est proposé pour ceux qui souhaitera
 
 je compte bien entendu sur le respect des logins ^^
 
+## Images 
+Retrouvez ici quelques images ilustrant l'application : 
+![plot](./githubSources/part1.png)
+Ainsi qu'ici :
+![plot](./githubSources/part2.png)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
