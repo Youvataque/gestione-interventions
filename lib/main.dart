@@ -45,6 +45,7 @@ class _MainAppState extends State<MainApp> {
     return PopScope(
         canPop: false,
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: ThemeData(
               splashColor: Platform.isIOS ? Colors.transparent : mainColor(),
               primaryColor: mainColor(),
