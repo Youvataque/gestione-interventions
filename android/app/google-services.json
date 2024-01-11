@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "766234130685",
+    "project_id": "gestionnaireinterventions",
+    "storage_bucket": "gestionnaireinterventions.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766234130685:android:b71b0944f603130e0aa694",
+        "android_client_info": {
+          "package_name": "com.example.gestionnaire_interventions"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfQplMyBNeU_WfKpBM4rD8FrzJuzwCFqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

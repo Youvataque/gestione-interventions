@@ -1,0 +1,1 @@
+ /Users/youvataque/FlutterProjects/TestWeb/gestionnaire_interventions/.dart_tool/flutter_build/aaeca7d8eb8248130558c67362f1e3ae/native_assets.yaml: 
