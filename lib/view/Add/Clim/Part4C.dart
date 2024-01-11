@@ -23,7 +23,7 @@ class _Part4CState extends State<Part4C> {
   ];
 
   List<String> name = [
-    "Dépose du capeau :",
+    "Dépose du capot :",
     "Aspiration et brossage :",
     "Nettoyage et rinçage :",
     "Vérif raccords cuivres :",
