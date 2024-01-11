@@ -290,7 +290,7 @@ class _PompeTemplateState extends State<PompeTemplate> {
                     Container(
                       width: 180,
                       child: textTwoWrap(
-                          "Nom technicien : ",
+                          "Nom du technicien : ",
                           userData[getUserClientFromInter(widget.userId)].nom +
                               " " +
                               userData[getUserClientFromInter(widget.userId)]
@@ -298,7 +298,7 @@ class _PompeTemplateState extends State<PompeTemplate> {
                     ),
                     Container(
                         width: 180,
-                        child: textTwoWrap("Nom client : ",
+                        child: textTwoWrap("Nom du client : ",
                             getNameFromInter(widget.clientId))),
                   ],
                 ),
