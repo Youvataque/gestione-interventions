@@ -1,4 +1,4 @@
-# gestionnaire_interventions
+# gestionnaire d'interventions
 
 Ce repo a uniquement pour but de faire de la démonstration et d'aider des développeurs à comprendre le fonctionnement de certaines features. Le code ne peut être téléchargé et et utilisé à des fins commerciales sans tout contact préalable avec ma personne !
 
