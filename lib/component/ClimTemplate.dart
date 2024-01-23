@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:gestionnaire_interventions/component/connect.dart';
 import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class ClimTemplate extends StatefulWidget {
   final String identite;
@@ -222,21 +224,25 @@ class _ClimTemplateState extends State<ClimTemplate> {
   //////////////////////////
   //////////////////////////
 
-  Row part1() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+  Center part1() {
+    return Center(
+      child: SizedBox(
+      width: MediaQuery.sizeOf(context).width -20,
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Column(
           children: [
             Image.asset(
-              "src/logoVide.png",
-              scale: 28,
+              "src/GestionnaryIcon.png",
+              scale: 20,
             ),
             Text(
-              "Mon gestionnaire",
+              "Sols Energies Bains",
               style: TextStyle(
                   color: textColor(),
-                  fontSize: 17,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold),
             ),
             Text("Attestation de capacité : ", style: titleStyle()),
@@ -258,7 +264,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
               height: 25,
             ),
             block(
-              200,
+              190,
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -305,6 +311,8 @@ class _ClimTemplateState extends State<ClimTemplate> {
           ],
         )
       ],
+    ),
+    ),
     );
   }
 

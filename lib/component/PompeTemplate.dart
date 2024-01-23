@@ -8,6 +8,8 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:gestionnaire_interventions/component/connect.dart';
 import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class PompeTemplate extends StatefulWidget {
   final String identite;
@@ -203,21 +205,25 @@ class _PompeTemplateState extends State<PompeTemplate> {
     );
   }
 
-  Row part1() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+  Center part1() {
+    return Center(
+      child: SizedBox(
+      width: MediaQuery.sizeOf(context).width -20,
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Column(
           children: [
             Image.asset(
-              "src/logoVide.png",
-              scale: 28,
+              "src/GestionnaryIcon.png",
+              scale: 20,
             ),
             Text(
-              "Mon gestionnaire",
+              "Sols Energies Bains",
               style: TextStyle(
                   color: textColor(),
-                  fontSize: 17,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold),
             ),
             Text("Attestation de capacité : ", style: titleStyle()),
@@ -239,33 +245,55 @@ class _PompeTemplateState extends State<PompeTemplate> {
               height: 25,
             ),
             block(
-              200,
+              190,
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     width: 200,
-                    child: textTwoWrap("Adresse : ", entrepriseData.adresse),
+                    child: textRow(Text("Adresse : ", style: titleStyle()),
+                        Text(entrepriseData.adresse, style: argStyle())),
                   ),
                   Container(
                       width: 200,
-                      child: textTwoWrap("Ville : ", entrepriseData.ville)),
+                      child: textRow(
+                          Text(
+                            "Ville : ",
+                            style: titleStyle(),
+                          ),
+                          Text(entrepriseData.ville, style: argStyle()))),
                   Container(
                       width: 200,
-                      child:
-                          textTwoWrap("Code postale : ", entrepriseData.code)),
+                      child: textRow(
+                          Text(
+                            "Code postale : ",
+                            style: titleStyle(),
+                          ),
+                          Text(entrepriseData.code, style: argStyle()))),
                   Container(
                       width: 200,
-                      child: textTwoWrap("Email : ", entrepriseData.mail)),
+                      child: textRow(
+                          Text(
+                            "Email : ",
+                            style: titleStyle(),
+                          ),
+                          Text(entrepriseData.mail, style: argStyle()))),
                   Container(
                       width: 200,
-                      child: textTwoWrap("Téléphone : ", entrepriseData.phone))
+                      child: textRow(
+                          Text(
+                            "Téléphone : ",
+                            style: titleStyle(),
+                          ),
+                          Text(entrepriseData.phone, style: argStyle())))
                 ],
               ),
             )
           ],
         )
       ],
+    ),
+    ),
     );
   }
 
@@ -636,9 +664,41 @@ class _PompeTemplateState extends State<PompeTemplate> {
   Future SaveAndShare(Uint8List bytes, String userName) async {
     DateTime temp = DateTime.now();
     final directory = await getApplicationDocumentsDirectory();
-    final image = File(
-        '${directory.path}/${userName + temp.year.toString() + widget.place}.pdf');
-    image.writeAsBytesSync(bytes);
-    await Share.shareFiles([image.path]);
+
+    // Enregistrer l'image
+    final imagePath = '${directory.path}/${userName+temp.year.toString()}.png';
+    final imageFile = File(imagePath);
+    await imageFile.writeAsBytes(bytes);
+
+    // Créer un document PDF
+    final pdf = pw.Document();
+    final image = pw.MemoryImage(bytes);
+    const myPageTheme = pw.PageTheme(
+      pageFormat: PdfPageFormat.a4, // ou tout autre format de page que vous utilisez
+      margin: pw.EdgeInsets.zero, // Cela définit les marges à zéro
+    );
+  // Ajouter l'image au PDF en conservant les proportions
+    pdf.addPage(pw.Page(
+      pageTheme: myPageTheme,
+      build: (pw.Context contexte) {
+        return pw.Align(
+          alignment: pw.Alignment.topCenter,
+          child: pw.Image(
+            image,
+            fit: pw.BoxFit.fitHeight
+          )
+        );
+      }
+      
+    ));
+
+
+    // Enregistrer le PDF
+    final pdfPath = '${directory.path}/${userName+temp.year.toString()}.pdf';
+    final pdfFile = File(pdfPath);
+    await pdfFile.writeAsBytes(await pdf.save());
+
+    // Partager le PDF
+    await Share.shareFiles([pdfFile.path]);
   }
 }
