@@ -338,7 +338,7 @@ class _PompeTemplateState extends State<PompeTemplate> {
                     Container(
                       width: 180,
                       child: textTwoWrap("Téléphone : ",
-                          clients[getClientFromInter(widget.userId)].phone),
+                          clients[getClientFromInter(widget.clientId)].phone),
                     ),
                   ],
                 ),
@@ -351,7 +351,7 @@ class _PompeTemplateState extends State<PompeTemplate> {
                     Container(
                         width: 180,
                         child: textTwoWrap("Email : ",
-                            clients[getClientFromInter(widget.userId)].mail)),
+                            clients[getClientFromInter(widget.clientId)].mail)),
                   ],
                 ),
                 Row(
@@ -364,7 +364,7 @@ class _PompeTemplateState extends State<PompeTemplate> {
                         width: 180,
                         child: textTwoWrap(
                             "Adresse : ",
-                            clients[getClientFromInter(widget.userId)]
+                            clients[getClientFromInter(widget.clientId)]
                                 .adresse)),
                   ],
                 ),
