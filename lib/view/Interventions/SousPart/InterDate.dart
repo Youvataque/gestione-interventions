@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/Struct.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
+import 'package:gestionnaire_interventions/oldComponent/Struct.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/view/Interventions/SousPart/InterPlace.dart';
 
 class InterDate extends StatefulWidget {
@@ -26,24 +27,27 @@ class _InterDateState extends State<InterDate> {
   @override
   Widget build(BuildContext context) {
     return InterTemplate(
-        title: "Nos interventions",
-        sousTitle: "Selectionnez une date :",
-        Body: Column(
-          children: List.generate(
-              widget.allInterDate.length,
-              (index) => Column(
-                    children: [
-                      InterButton(
-                        index,
-                        func3,
-                        "${1 + index} : ${widget.allInterDate[index]}",
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      )
-                    ],
-                  )),
-        ));
+      title: "Nos interventions",
+      sousTitle: "Selectionnez une date :",
+      body: Column(
+        children: List.generate(
+          widget.allInterDate.length,
+          (index) => Column(
+            children: [
+              MainButton(
+                title: "${1 + index} : ${widget.allInterDate[index]}",
+                func: () {
+                  func3(index);
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              )
+            ],
+          )
+        ),
+      )
+    );
   }
 
   void func3(int index) {
@@ -53,13 +57,15 @@ class _InterDateState extends State<InterDate> {
       InterPompeDate(widget.allInterDate[index]);
     }
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => InterPlace(
-                  allInterPiece: allInterPiece,
-                  InterDateClimC: InterDateClimC,
-                  InterDatePompeC: InterDatePompeC,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => InterPlace(
+          allInterPiece: allInterPiece,
+          InterDateClimC: InterDateClimC,
+          InterDatePompeC: InterDatePompeC,
+        )
+      )
+    );
   }
 
   // remplissage tableau des dates

@@ -3,11 +3,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:gestionnaire_interventions/component/connect.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:gestionnaire_interventions/oldComponent/connect.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -153,16 +154,13 @@ class _PompeTemplateState extends State<PompeTemplate> {
                         children: [
                           Icon(
                             CupertinoIcons.share_up,
-                            color:
-                                screenable ? Colors.transparent : mainColor(),
+                            color: screenable ? Colors.transparent : mainColor(),
                             size: 35,
                           ),
                           Text(
                             "Exporter",
                             style: TextStyle(
-                                color: screenable
-                                    ? Colors.transparent
-                                    : mainColor(),
+                                color: screenable ? Colors.transparent : mainColor(),
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold),
                           )
@@ -199,13 +197,14 @@ class _PompeTemplateState extends State<PompeTemplate> {
           const SizedBox(
             height: 5,
           ),
-          part5()
+          part5(),
+          const Gap(10)
         ],
       ),
     );
   }
 
-  Center part1() {
+Center part1() {
     return Center(
       child: SizedBox(
       width: MediaQuery.sizeOf(context).width -20,
@@ -216,7 +215,7 @@ class _PompeTemplateState extends State<PompeTemplate> {
         Column(
           children: [
             Image.asset(
-              "src/GestionnaryIcon.png",
+              "src/Logo_SEB.jpg",
               scale: 20,
             ),
             Text(
@@ -239,66 +238,65 @@ class _PompeTemplateState extends State<PompeTemplate> {
         const SizedBox(
           width: 10,
         ),
-        Column(
-          children: [
-            const SizedBox(
-              height: 25,
-            ),
-            block(
-              190,
+        block(0,
+          Column(
+            children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 200,
-                    child: textRow(Text("Adresse : ", style: titleStyle()),
-                        Text(entrepriseData.adresse, style: argStyle())),
-                  ),
-                  Container(
-                      width: 200,
-                      child: textRow(
-                          Text(
-                            "Ville : ",
-                            style: titleStyle(),
-                          ),
-                          Text(entrepriseData.ville, style: argStyle()))),
-                  Container(
-                      width: 200,
-                      child: textRow(
-                          Text(
-                            "Code postale : ",
-                            style: titleStyle(),
-                          ),
-                          Text(entrepriseData.code, style: argStyle()))),
-                  Container(
-                      width: 200,
-                      child: textRow(
-                          Text(
-                            "Email : ",
-                            style: titleStyle(),
-                          ),
-                          Text(entrepriseData.mail, style: argStyle()))),
-                  Container(
-                      width: 200,
-                      child: textRow(
-                          Text(
-                            "Téléphone : ",
-                            style: titleStyle(),
-                          ),
-                          Text(entrepriseData.phone, style: argStyle())))
-                ],
-              ),
-            )
-          ],
-        )
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          child: textRow(Text("Adresse : ", style: titleStyle()),
+                              Text(entrepriseData.adresse, style: argStyle())),
+                        ),
+                        const Gap(5)
+                      ],
+                    ),
+                    SizedBox(
+                        child: textRow(
+                            Text(
+                              "Ville : ",
+                              style: titleStyle(),
+                            ),
+                            Text(entrepriseData.ville, style: argStyle()))),
+                    SizedBox(
+                        child: textRow(
+                            Text(
+                              "Code postale : ",
+                              style: titleStyle(),
+                            ),
+                            Text(entrepriseData.code, style: argStyle()))),
+                    SizedBox(
+                        child: textRow(
+                            Text(
+                              "Email : ",
+                              style: titleStyle(),
+                            ),
+                            Text(entrepriseData.mail, style: argStyle()))),
+                    SizedBox(
+                        child: textRow(
+                            Text(
+                              "Téléphone : ",
+                              style: titleStyle(),
+                            ),
+                            Text(entrepriseData.phone, style: argStyle())))
+                  ],
+                ),
+            ],
+          )
+        ),
       ],
     ),
     ),
     );
   }
 
-  Container part2() {
-    return block(
+  Widget part2() {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width - 20,
+      child: block(
         MediaQuery.sizeOf(context).width - 20,
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -315,67 +313,64 @@ class _PompeTemplateState extends State<PompeTemplate> {
               children: [
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
-                          "Nom du technicien : ",
+                          "Nom technicien : ",
                           userData[getUserClientFromInter(widget.userId)].nom +
                               " " +
                               userData[getUserClientFromInter(widget.userId)]
                                   .prenom),
                     ),
-                    Container(
-                        width: 180,
-                        child: textTwoWrap("Nom du client : ",
+                    Expanded(
+                        child: textTwoWrap("Nom client : ",
                             getNameFromInter(widget.clientId))),
                   ],
                 ),
                 Row(
                   children: [
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap("Date visite : ", widget.date)),
-                    Container(
-                      width: 180,
-                      child: textTwoWrap("Téléphone : ",
-                          clients[getClientFromInter(widget.clientId)].phone),
+                    Expanded(
+                      child: textTwoWrap(
+                        "Téléphone : ",
+                        clients[clientFromId(widget.clientId)].phone
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap("Dernier entretien : ",
                             returnDateFromSerial(widget.serialNumber, false))),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap("Email : ",
-                            clients[getClientFromInter(widget.clientId)].mail)),
+                            clients[clientFromId(widget.clientId)].mail)),
                   ],
                 ),
                 Row(
                   children: [
-                    Container(
-                        width: 180,
+                    Expanded(
                         child:
                             textTwoWrap("Lieu de la machine : ", widget.place)),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Adresse : ",
-                            clients[getClientFromInter(widget.clientId)]
+                            clients[clientFromId(widget.clientId)]
                                 .adresse)),
                   ],
                 ),
               ],
             ),
           ],
-        ));
+        )),
+    );
   }
 
-  Container part3() {
-    return block(
+  Widget part3() {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width - 20,
+      child: block(
         MediaQuery.sizeOf(context).width - 20,
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -392,24 +387,20 @@ class _PompeTemplateState extends State<PompeTemplate> {
               children: [
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap("Marque : ", widget.marque),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child:
                             textTwoWrap("Type de la machine : ", widget.type)),
                   ],
                 ),
                 Row(
                   children: [
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Date de mise en service : ", widget.miseRoute)),
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap("Puissance : ", widget.puissance),
                     ),
                   ],
@@ -421,11 +412,13 @@ class _PompeTemplateState extends State<PompeTemplate> {
               child: textTwoWrap("Numéro de série : ", widget.serialNumber),
             ),
           ],
-        ));
+        )));
   }
 
-  Container part4() {
-    return block(
+  Widget part4() {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width - 20,
+      child: block(
         MediaQuery.sizeOf(context).width - 20,
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -442,26 +435,22 @@ class _PompeTemplateState extends State<PompeTemplate> {
               children: [
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap("Contrôle protections électriques : ",
                           boolToString(widget.contrProtElec)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap("Contrôle du vase d'expansion : ",
                             boolToString(widget.contrVaseExp))),
                   ],
                 ),
                 Row(
                   children: [
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Resserage connexions électriques : ",
                             boolToString(widget.resConElec))),
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap("Contrôle de l'eau de chauffage : ",
                           boolToString(widget.contrVisuEau)),
                     ),
@@ -469,13 +458,11 @@ class _PompeTemplateState extends State<PompeTemplate> {
                 ),
                 Row(
                   children: [
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Mesure et contrôle de la tension : ",
                             boolToString(widget.mesContrTen))),
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
                           "Contrôle du fonctionnement du circulateur : ",
                           boolToString(widget.contrFoncCirc)),
@@ -484,13 +471,11 @@ class _PompeTemplateState extends State<PompeTemplate> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap("Mesure et contrôle des intensités : ",
                           boolToString(widget.mesContrInt)),
                     ),
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
                           "Contrôle étanchéité souspape / organe hydraulique : ",
                           boolToString(widget.contrEtanSouHydrau)),
@@ -499,14 +484,12 @@ class _PompeTemplateState extends State<PompeTemplate> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
                           "Contrôle du paramétrage de la régulation : ",
                           boolToString(widget.contrParReg)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Contrôle anode de protection du ballon de stockage : ",
                             boolToString(widget.contrAnodeBall))),
@@ -514,42 +497,36 @@ class _PompeTemplateState extends State<PompeTemplate> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
                           "Contrôle de l'enclenchement de l'appoint thermique : ",
                           boolToString(widget.contrEnclTher)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap("Contrôle du fluide caloporteur : ",
                             boolToString(widget.contrFluideCal))),
                   ],
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
                           "Contrôle de l'étanchéité du circuit frigorifique : ",
                           boolToString(widget.contrEtanFri)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap("Contrôle du niveau d'anti-gel : ",
                             boolToString(widget.contrProtAnti))),
                   ],
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
                           "Contrôle de l'état des calorifuges : ",
                           boolToString(widget.contrEtatCal)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Contrôle visuel et auditif de l'ensemble : ",
                             boolToString(widget.contrVisuEns))),
@@ -557,13 +534,11 @@ class _PompeTemplateState extends State<PompeTemplate> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap("Nettoyage de l'échangeur d'air : ",
                           boolToString(widget.netEchAir)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Vérification du fonctionnement de l'ensemble : ",
                             boolToString(widget.essaiFonc))),
@@ -571,14 +546,12 @@ class _PompeTemplateState extends State<PompeTemplate> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
                           "Contrôle du fonctionnement des ventilos : ",
                           boolToString(widget.contrFoncVentil)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Purge de l'air du circuit hydraulique : ",
                             boolToString(widget.purge))),
@@ -586,13 +559,11 @@ class _PompeTemplateState extends State<PompeTemplate> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap("Contrôle des bacs à condensation : ",
                           boolToString(widget.contrEvacCon)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Nettoyage et entretien des filtres :",
                             boolToString(widget.nettEntrFiltre))),
@@ -600,14 +571,12 @@ class _PompeTemplateState extends State<PompeTemplate> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      width: 180,
+                    Expanded(
                       child: textTwoWrap(
                           "Mesure température en fonctionnement (air/eau) : ",
                           boolToString(widget.mesTempFonc)),
                     ),
-                    Container(
-                        width: 180,
+                    Expanded(
                         child: textTwoWrap(
                             "Contrôle de la pression des vases d'expansion : ",
                             boolToString(widget.contrPressVase))),
@@ -620,11 +589,13 @@ class _PompeTemplateState extends State<PompeTemplate> {
               ],
             ),
           ],
-        ));
+        )));
   }
 
-  Container part5() {
-    return block(
+  Widget part5() {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width - 20,
+      child: block(
         MediaQuery.sizeOf(context).width - 20,
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -658,7 +629,7 @@ class _PompeTemplateState extends State<PompeTemplate> {
               ],
             ),
           ],
-        ));
+        )));
   }
 
   Future SaveAndShare(Uint8List bytes, String userName) async {

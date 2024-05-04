@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/connect.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/connect.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/main.dart';
 import 'package:gestionnaire_interventions/view/Add/AddVar.dart';
 
@@ -50,9 +53,10 @@ class _Part4PState extends State<Part4P> {
       setState(() {
         errorText = "";
       });
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MainApp()));
+       Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => MainApp()));
     });
+   
   }
 
   void pushInter() async {
@@ -83,39 +87,32 @@ class _Part4PState extends State<Part4P> {
 
   Column Body() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title("Mise en route :"),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
-              boxShadow: [
-                BoxShadow(color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-              ],
-              borderRadius: BorderRadius.circular(20)),
-          width: MediaQuery.sizeOf(context).width - 20,
+        const TitleText(title: "Mise en route :"),
+        const Gap(5),
+        CloudBack(
           child: Column(
             children: [
-              const SizedBox(
-                height: 20,
-              ),
+              const Gap(20),
               Column(
                 children: List.generate(
-                    4,
-                    (index) => Column(
-                          children: [
-                            TextArea(content[index], name[index]),
-                            const SizedBox(
-                              height: 20,
-                            )
-                          ],
-                        )),
+                  4,
+                  (index) => Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: textArea(content[index], name[index], context),
+                      ),
+                      const Gap(20),
+                    ],
+                  )
+                ),
               ),
             ],
           ),
         ),
-        const SizedBox(
-          height: 20,
-        )
+        const Gap(20),
       ],
     );
   }

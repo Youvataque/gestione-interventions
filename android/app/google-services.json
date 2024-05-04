@@ -23,6 +23,44 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766234130685:android:27b7cdbb2ccc3b740aa694",
+        "android_client_info": {
+          "package_name": "com.example.gestionnairechantier"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfQplMyBNeU_WfKpBM4rD8FrzJuzwCFqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766234130685:android:84818fced11579a80aa694",
+        "android_client_info": {
+          "package_name": "com.example.gestionnairedevis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfQplMyBNeU_WfKpBM4rD8FrzJuzwCFqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"

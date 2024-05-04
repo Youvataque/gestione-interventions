@@ -236,6 +236,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "gap",
+      "rootUri": "file:///Users/seguinyannis/.pub-cache/hosted/pub.dev/gap-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "html",
       "rootUri": "file:///Users/seguinyannis/.pub-cache/hosted/pub.dev/html-0.15.4",
       "packageUri": "lib/",
@@ -614,7 +620,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-01-23T14:20:53.530975Z",
+  "generated": "2024-05-02T16:37:03.961510Z",
   "generator": "pub",
   "generatorVersion": "3.2.5"
 }

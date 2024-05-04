@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/Tool.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MyTextField.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/SwitcherLikeField.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/view/Add/AddVar.dart';
 import 'package:gestionnaire_interventions/view/Add/Clim/Part5C.dart';
 
@@ -48,31 +53,35 @@ class _Part4CState extends State<Part4C> {
     climData["verifSupp"] = content[4][0];
     climData["verifVentil"] = content[5][0];
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Part5C()));
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Part5C())
+    );
   }
 
   Column Body() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title("Infos groupe exterieur :"),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
-              boxShadow: [
-                BoxShadow(color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-              ],
-              borderRadius: BorderRadius.circular(20)),
-          width: MediaQuery.sizeOf(context).width - 20,
+        const TitleText(title: "Infos groupe exterieur :"),
+        const Gap(5),
+        CloudBack(
           child: Column(
             children: [
               const SizedBox(
                 height: 20,
               ),
-              Pointer(" Type groupe extérieur "),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Pointer(" Type groupe extérieur ", context),
+              ),
               const SizedBox(
                 height: 20,
               ),
-              bigTextField(typeExt, "Mono | Bi-split | Tri | Quadro"),
+              SizedBox(
+                height: 50,
+                child: MyTextField(controller: typeExt, hintText: "Mono | Bi-split | Tri | Quadro"),
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -81,14 +90,27 @@ class _Part4CState extends State<Part4C> {
                     6,
                     (index) => Column(
                           children: [
-                            BoolField(
-                                controller: content[index],
-                                hintText: name[index]),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              child: SizedBox(
+                                height: 50,
+                                child: SwitcherLikeField(
+                                  title: name[index],
+                                  statut: content[index][0],
+                                  onChanged: ((p0) {
+                                    setState(() {
+                                      content[index][0] = p0;
+                                    });
+                                  })
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               height: 20,
                             )
-                          ],
-                        )),
+                          ]
+                    )
+                  ),
               ),
             ],
           ),

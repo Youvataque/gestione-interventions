@@ -1,8 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/Struct.dart';
-import 'package:gestionnaire_interventions/component/connect.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/Struct.dart';
+import 'package:gestionnaire_interventions/oldComponent/connect.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/view/Interventions/SousPart/InterType.dart';
 
 class Intervention extends StatefulWidget {
@@ -20,59 +23,43 @@ class _InterventionState extends State<Intervention> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TopOfView(
-            title: "Nos interventions",
-            height: 60,
-            width: MediaQuery.sizeOf(context).width - 20,
-            lead: Icon(
-              CupertinoIcons.wrench_fill,
-              size: 40,
-              color: textColor(),
-            ),
-          ),
-          const SizedBox(
-            height: 80,
-          ),
-          title("Toutes vos interventions :"),
-          Body(Column(
-            children: List.generate(
+          const TitleText(title: "Toutes vos interventions :"),
+          const Gap(5),
+          body(
+            Column(
+              children: List.generate(
                 allInterClientId.length,
                 (index) => Column(
-                      children: [
-                        InterButton(
-                          index,
-                          func1,
-                          "${1 + index} : ${getNameFromInter(allInterClientId[index])}",
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        )
-                      ],
-                    )),
-          )),
+                  children: [
+                    MainButton(
+                      title: "${1 + index} : ${getNameFromInter(allInterClientId[index])}",
+                      func: () {
+                        func1(index);
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    )
+                  ],
+                )
+              ),
+            )
+          ),
           const SizedBox(
-            height: 120,
+            height: 30,
           ),
         ],
       ),
     );
   }
 
-  Container Body(Widget content) {
-    return Container(
-      width: MediaQuery.sizeOf(context).width - 20,
-      decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.85),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(blurRadius: 7, color: Colors.grey.withOpacity(0.7))
-          ]),
+  Widget body(Widget content) {
+    return CloudBack(
       child: Column(
         children: [
-          const SizedBox(
-            height: 20,
-          ),
+          const Gap(20),
           content,
         ],
       ),
@@ -82,10 +69,11 @@ class _InterventionState extends State<Intervention> {
   void func1(int index) {
     InterPompeClimType(allInterClientId[index]);
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                InterType(InterClimC: InterClimC, InterPompeC: InterPompeC)));
+      context,
+      MaterialPageRoute(
+        builder: (context) => InterType(InterClimC: InterClimC, InterPompeC: InterPompeC)
+      )
+    );
   }
   // Remplissage des tableaux par type
 

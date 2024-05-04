@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/Tool.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/StackedField.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/SwitcherLikeField.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/Structure/DoubleTextfield.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/view/Add/AddVar.dart';
 import 'package:gestionnaire_interventions/view/Add/Clim/Part4C.dart';
 
@@ -58,34 +64,33 @@ class _Part3CState extends State<Part3C> {
 
   Column Body() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title("Infos unité interieur :"),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
-              boxShadow: [
-                BoxShadow(color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-              ],
-              borderRadius: BorderRadius.circular(20)),
-          width: MediaQuery.sizeOf(context).width - 20,
+        const TitleText(title: "Infos unité interieur :"),
+        const Gap(5),
+        CloudBack(
           child: Column(
             children: [
               const SizedBox(
                 height: 20,
               ),
-              Pointer(" Température à l'arrivé "),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Pointer(" Température à l'arrivé ", context),
+              ),
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  litleTextField(cold, "Mode froid", true),
-                  const SizedBox(
-                    width: 20,
+              SizedBox(
+                height: 55,
+                child: StackedField(
+                  data: DoubleTextfield(
+                    title1: "Mode froid",
+                    title2: "Mode chaud",
+                    controller1: cold,
+                    controller2: hot
                   ),
-                  litleTextField(hot, "Mode chaud", true)
-                ],
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -95,16 +100,31 @@ class _Part3CState extends State<Part3C> {
                     7,
                     (index) => Column(
                           children: [
-                            BoolField(
-                                controller: content[index],
-                                hintText: name[index]),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: SizedBox(
+                                height: 50,
+                                child: SwitcherLikeField(
+                                  title: name[index],
+                                  statut: content[index][0],
+                                  onChanged: ((p0) {
+                                    setState(() {
+                                      content[index][0] = p0;
+                                    });
+                                  })
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               height: 20,
                             )
                           ],
                         )),
               ),
-              TextArea(remarque1, "Des remarques ?"),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: textArea(remarque1, "Des remarques ?", context),
+              ),
               const SizedBox(
                 height: 20,
               )

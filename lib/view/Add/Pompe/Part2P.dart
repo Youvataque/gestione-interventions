@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/Tool.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/SwitcherLikeField.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/view/Add/AddVar.dart';
 import 'package:gestionnaire_interventions/view/Add/Pompe/Part3P.dart';
 
@@ -48,10 +52,11 @@ class _Part2PState extends State<Part2P> {
   @override
   Widget build(BuildContext context) {
     return AddTemplate(
-        title: "Pompe à chaleur",
-        Body: Body(),
-        func: Part2P,
-        mainIcon: CupertinoIcons.sun_haze);
+      title: "Pompe à chaleur",
+      Body: Body(),
+      func: Part2P,
+      mainIcon: CupertinoIcons.sun_haze
+    );
   }
 
   void Part2P() {
@@ -69,46 +74,48 @@ class _Part2PState extends State<Part2P> {
     pompeData["mesTempFonc"] = content[11][0];
     pompeData["contrVaseExp"] = content[12][0];
     pompeData["contrVisuEau"] = content[13][0];
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Part3P()));
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Part3P())
+    );
   }
 
   Column Body() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title("Points de contrôle :"),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
-              boxShadow: [
-                BoxShadow(color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-              ],
-              borderRadius: BorderRadius.circular(20)),
-          width: MediaQuery.sizeOf(context).width - 20,
+        const TitleText(title: "Points de contrôle :"),
+        const Gap(5),
+        CloudBack(
           child: Column(
             children: [
-              const SizedBox(
-                height: 20,
-              ),
+              const Gap(20),
               Column(
                 children: List.generate(
-                    14,
-                    (index) => Column(
-                          children: [
-                            BoolField(
-                                controller: content[index],
-                                hintText: name[index]),
-                            const SizedBox(
-                              height: 20,
-                            )
-                          ],
-                        )),
+                  14,
+                  (index) => Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: SwitcherLikeField(
+                          statut: content[index][0],
+                          title: name[index],
+                          onChanged: (p0) {
+                            setState(() {
+                              content[index][0] = p0;
+                            });
+                          },
+                        ),
+                      ),
+                      const Gap(20),
+                    ],
+                  )
+                ),
               ),
             ],
           ),
         ),
-        const SizedBox(
-          height: 20,
-        )
+        const Gap(20),
       ],
     );
   }

@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/Struct.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
+import 'package:gestionnaire_interventions/oldComponent/Struct.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/view/Interventions/SousPart/InterDate.dart';
 
 class InterType extends StatefulWidget {
   final List<InterventionC> InterClimC;
   final List<InterventionP> InterPompeC;
 
-  const InterType(
-      {super.key, required this.InterClimC, required this.InterPompeC});
+  const InterType({super.key, required this.InterClimC, required this.InterPompeC});
 
   @override
   State<InterType> createState() => _InterTypeState();
@@ -22,24 +22,27 @@ class _InterTypeState extends State<InterType> {
   @override
   Widget build(BuildContext context) {
     return InterTemplate(
-        title: "Nos interventions",
-        sousTitle: "Selectionnez un type :",
-        Body: Column(
-          children: List.generate(
-              2,
-              (index) => Column(
-                    children: [
-                      InterButton(
-                        index,
-                        func2,
-                        "${1 + index} : ${name[index]}",
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      )
+      title: "Nos interventions",
+      sousTitle: "Selectionnez un type :",
+      body: Column(
+            children: List.generate(
+                2,
+                (index) => Column(
+                      children: [
+                        MainButton(
+                          title: "${1 + index} : ${name[index]}",
+                          func: () {
+                            func2(index);
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        )
                     ],
-                  )),
-        ));
+                )
+            ),
+        )
+    );
   }
 
   void func2(int index) {
@@ -79,4 +82,5 @@ class _InterTypeState extends State<InterType> {
       }
     }
   }
+
 }

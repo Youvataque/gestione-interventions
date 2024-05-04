@@ -1,9 +1,15 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/Tool.dart';
-import 'package:gestionnaire_interventions/component/connect.dart';
-import 'package:gestionnaire_interventions/component/Search.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/InfoText.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/MySearchDelegate.dart';
+import 'package:gestionnaire_interventions/oldComponent/Struct.dart';
+import 'package:gestionnaire_interventions/oldComponent/connect.dart';
 import 'package:gestionnaire_interventions/view/Addclient/Add/AddPage.dart';
+
+
+Client theClient = const Client();
 
 class AddClient extends StatefulWidget {
   const AddClient({super.key});
@@ -12,6 +18,8 @@ class AddClient extends StatefulWidget {
   State<AddClient> createState() => _AddClientState();
 }
 
+///////////////////////////////////////////////////////////////
+/// page d'ajout principale
 class _AddClientState extends State<AddClient> {
   List<String> name = [
     "Rechercher un client",
@@ -25,169 +33,108 @@ class _AddClientState extends State<AddClient> {
   ];
   List<void Function(BuildContext)> func = [
     (BuildContext context) {
-      showSearch(
-          context: context,
-          delegate: Search(SearchContent: clients, Destination: true));
+      showSearch(context: context, delegate: Search(searchContent: clients, destination: true, context: context));
     },
     (BuildContext context) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AddPage()));
+       Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AddPage())
+      );
     },
     (BuildContext context) {
-      showSearch(context: context, delegate: Search(SearchContent: clients));
+       showSearch(context: context, delegate: Search(searchContent: clients, context: context));
     },
   ];
   @override
   Widget build(BuildContext context) {
+    return body();
+  }
+
+///////////////////////////////////////////////////////////////
+/// corp du code
+  SingleChildScrollView body() {
     return SingleChildScrollView(
       child: Column(
         children: [
-          TopOfView(
-            title: "Vos clients",
-            height: 60,
-            width: MediaQuery.sizeOf(context).width - 20,
-            lead: Icon(
-              CupertinoIcons.person_2_square_stack_fill,
-              size: 40,
-              color: textColor(),
-            ),
+          buttonGen(),
+          const Gap(30),
+          const InfoText(
+            text: "Toute manipulation du serveur est un \n risque ! Prenez donc le temps de faire les \n choses comme il faut."
           ),
-          const SizedBox(
-            height: 100,
-          ),
-          Body(),
-          const SizedBox(
-            height: 30,
-          ),
-          Center(
-            child: Text(
-              "Toute manipulation du serveur est un \n risque ! Prenez donc le temps de faire les \n choses comme il faut.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: textColor(),
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(
-            height: 120,
-          )
+          const Gap(120)
         ],
       ),
     );
   }
 
-  Container Body() {
-    return Container(
-      width: MediaQuery.sizeOf(context).width - 20,
-      child: ListView.builder(
-          itemCount: 3,
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return Container(
-              height: 95,
-              padding: const EdgeInsets.only(bottom: 15),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white.withOpacity(0.95),
-                    surfaceTintColor: Colors.transparent,
-                    foregroundColor: mainColor(),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                onPressed: () {
-                  func[index](context);
-                },
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                        height: 90,
-                        width: 90,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Icon(
-                            srcIm[index],
-                            size: 45,
-                          ),
-                        )),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      name[index],
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: textColor()),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
+///////////////////////////////////////////////////////////////
+/// générateur de bouton
+  SizedBox buttonGen() {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width - 30,
+      child: Column(
+        children: List.generate(
+          name.length,
+          (index) => element(index)
+        ),
+      )
     );
   }
 
-  Container ClientBody() {
+///////////////////////////////////////////////////////////////
+/// élément a générer
+  Container element(int index) {
     return Container(
-        decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.85),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-            ]),
-        width: MediaQuery.sizeOf(context).width - 20,
-        child: Column(
+      height: 80,
+      padding: const EdgeInsets.only(bottom: 15),
+      child: ElevatedButton(
+        style: buttonStyle(),
+        onPressed: () => func[index](context),
+        child: Row(
           children: [
-            const SizedBox(
-              height: 20,
+            const Gap(5),
+            iconFormat(index),
+            const Gap(30),
+            Text(
+              name[index],
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).textTheme.labelLarge!.color
+              ),
             ),
-            Column(
-                children: List.generate(
-                    clients.length,
-                    (index) => Container(
-                          width: 300,
-                          height: 60,
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.grey,
-                                  surfaceTintColor: Colors.transparent,
-                                  backgroundColor: mainColor(),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20))),
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    clients[index].nom,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    clients[index].prenom,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )),
-                        ))),
-            const SizedBox(
-              height: 20,
-            )
           ],
-        ));
+        ),
+      ),
+    );
+  }
+
+///////////////////////////////////////////////////////////////
+/// style du bouton
+  ButtonStyle buttonStyle() {
+    return ElevatedButton.styleFrom(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
+      surfaceTintColor: Colors.transparent,
+      foregroundColor: Theme.of(context).primaryColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      )
+    );
+  }
+
+///////////////////////////////////////////////////////////////
+/// formate l'icon
+  SizedBox iconFormat(int index) {
+    return SizedBox(
+      height: 70,
+      width: 70,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Icon(
+          srcIm[index],
+          size: 40,
+        ),
+      )
+    );
   }
 }

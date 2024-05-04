@@ -88,7 +88,7 @@ class InterventionC {
   final bool testCondensa;
   final String observD2;
   final String typeExt;
-  final bool capeau;
+  final bool capot;
   final bool aspiBros;
   final bool cleanRin;
   final bool verifCuivre;
@@ -125,7 +125,7 @@ class InterventionC {
     this.testCondensa = false,
     this.observD2 = "",
     this.typeExt = "",
-    this.capeau = false,
+    this.capot = false,
     this.aspiBros = false,
     this.cleanRin = false,
     this.verifCuivre = false,

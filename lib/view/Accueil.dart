@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/ClimTemplate.dart';
-import 'package:gestionnaire_interventions/component/PompeTemplate.dart';
-import 'package:gestionnaire_interventions/component/connect.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/ClimTemplate.dart';
+import 'package:gestionnaire_interventions/oldComponent/PompeTemplate.dart';
+import 'package:gestionnaire_interventions/oldComponent/connect.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({super.key});
@@ -16,23 +20,11 @@ class _AccueilState extends State<Accueil> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TopOfView(
-              title: " Mon gestionnaire",
-              width: MediaQuery.sizeOf(context).width - 20,
-              height: 60,
-              lead: SizedBox(
-                height: 45,
-                width: 45,
-                child: Image.asset(
-                  "src/logoVide.png",
-                ),
-              )),
-          const SizedBox(
-            height: 80,
-          ),
-          title("Vos dernières clim :"),
-          Body(Column(
+          const TitleText(title: "Vos dernières clim :"),
+          const Gap(5),
+          body(Column(
             children: List.generate(
                 lastClim.cardinal <= 3 ? lastClim.cardinal : 3,
                 (index) => Column(
@@ -47,70 +39,46 @@ class _AccueilState extends State<Accueil> {
           const SizedBox(
             height: 40,
           ),
-          title("Vos dernières pompes :"),
-          Body(Column(
-            children: List.generate(
+          const TitleText(title: "Vos dernières pompes :"),
+          const Gap(5),
+          body(
+            Column(
+              children: List.generate(
                 lastPompe.cardinal <= 3 ? lastPompe.cardinal : 3,
                 (index) => Column(
-                      children: [
-                        InterButton(index, false),
-                        const SizedBox(
-                          height: 20,
-                        )
-                      ],
-                    )),
-          )),
+                  children: [
+                    InterButton(index, false),
+                    const Gap(20)
+                  ],
+                )
+              ),
+            )
+          ),
           const SizedBox(
-            height: 120,
+            height: 30,
           )
         ],
       ),
     );
   }
 
-  Container Body(Widget content) {
-    return Container(
-      width: MediaQuery.sizeOf(context).width - 20,
-      decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.85),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(blurRadius: 7, color: Colors.grey.withOpacity(0.7))
-          ]),
+  Widget body(Widget content) {
+    return CloudBack(
       child: Column(
         children: [
-          const SizedBox(
-            height: 20,
-          ),
-          content,
+          const Gap(20),
+          content
         ],
       ),
     );
   }
 
-  Container InterButton(int index, bool clim) {
-    return Container(
-      height: 60,
-      width: 320,
-      child: ElevatedButton(
-          onPressed: () {
-            func(index, clim);
-          },
-          style: ElevatedButton.styleFrom(
-              backgroundColor: mainColor(),
-              surfaceTintColor: Colors.transparent,
-              foregroundColor: Colors.grey,
-              shadowColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: const BorderSide(color: Colors.grey))),
-          child: Text(
-              "${1 + index} : ${clim ? lastInterC[index].date : lastInterP[index].date} | ${getNameFromInter(clim ? lastInterC[index].clientId : lastInterP[index].clientId)}",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 16))),
+  Widget InterButton(int index, bool clim) {
+    return MainButton(
+      title: "${1 + index} : ${clim ? lastInterC[index].date : lastInterP[index].date} | ${getNameFromInter(clim ? lastInterC[index].clientId : lastInterP[index].clientId)}",
+      func: () {
+        func(index, clim);
+      },
     );
   }
 
@@ -119,7 +87,7 @@ class _AccueilState extends State<Accueil> {
         context: context,
         isScrollControlled: true,
         builder: ((BuildContext context) => Container(
-            height: MediaQuery.sizeOf(context).height - 70,
+            height: MediaQuery.sizeOf(context).height - 40,
             width: MediaQuery.sizeOf(context).width,
             decoration: const BoxDecoration(
                 color: Colors.white,
@@ -149,7 +117,7 @@ class _AccueilState extends State<Accueil> {
                     testCondensa: lastInterC[index].testCondensa,
                     observD2: lastInterC[index].observD2,
                     typeExt: lastInterC[index].typeExt,
-                    capeau: lastInterC[index].capeau,
+                    capot: lastInterC[index].capot,
                     aspiBros: lastInterC[index].aspiBros,
                     cleanRin: lastInterC[index].cleanRin,
                     verifCuivre: lastInterC[index].verifCuivre,
@@ -165,45 +133,46 @@ class _AccueilState extends State<Accueil> {
                     userId: lastInterC[index].userId,
                   )
                 : PompeTemplate(
-                    identite: lastInterP[index].identite,
-                    place: lastInterP[index].place,
-                    date: lastInterP[index].date,
-                    clientId: lastInterP[index].clientId,
-                    type: lastInterP[index].type,
-                    marque: lastInterP[index].marque,
-                    puissance: lastInterP[index].puissance,
-                    miseRoute: lastInterP[index].miseRoute,
-                    serialNumber: lastInterP[index].serialNumber,
-                    contrProtElec: lastInterP[index].contrProtElec,
-                    resConElec: lastInterP[index].resConElec,
-                    mesContrTen: lastInterP[index].mesContrTen,
-                    mesContrInt: lastInterP[index].mesContrInt,
-                    contrParReg: lastInterP[index].contrParReg,
-                    contrEnclTher: lastInterP[index].contrEnclTher,
-                    contrEtanFri: lastInterP[index].contrEtanFri,
-                    contrEtatCal: lastInterP[index].contrEtatCal,
-                    netEchAir: lastInterP[index].netEchAir,
-                    contrFoncVentil: lastInterP[index].contrFoncVentil,
-                    contrEvacCon: lastInterP[index].contrEvacCon,
-                    mesTempFonc: lastInterP[index].mesTempFonc,
-                    contrVaseExp: lastInterP[index].contrVaseExp,
-                    contrVisuEau: lastInterP[index].contrVisuEau,
-                    contrFoncCirc: lastInterP[index].contrFoncCirc,
-                    contrEtanSouHydrau: lastInterP[index].contrEtanSouHydrau,
-                    contrAnodeBall: lastInterP[index].contrAnodeBall,
-                    contrFluideCal: lastInterP[index].contrFluideCal,
-                    contrProtAnti: lastInterP[index].contrProtAnti,
-                    contrVisuEns: lastInterP[index].contrVisuEns,
-                    essaiFonc: lastInterP[index].essaiFonc,
-                    aideClient: lastInterP[index].aideClient,
-                    purge: lastInterP[index].purge,
-                    nettEntrFiltre: lastInterP[index].nettEntrFiltre,
-                    contrPressVase: lastInterP[index].contrPressVase,
-                    regonVase: lastInterP[index].regonVase,
-                    defautsCorr: lastInterP[index].defautsCorr,
-                    aPrevoir: lastInterP[index].aPrevoir,
-                    recommandation: lastInterP[index].recommandation,
-                    gains: lastInterP[index].gains,
-                    userId: lastInterP[index].userId))));
+                      identite: lastInterP[index].identite, 
+                      place: lastInterP[index].place, 
+                      date: lastInterP[index].date, 
+                      clientId: lastInterP[index].clientId, 
+                      type: lastInterP[index].type, 
+                      marque: lastInterP[index].marque, 
+                      puissance: lastInterP[index].puissance, 
+                      miseRoute: lastInterP[index].miseRoute, 
+                      serialNumber: lastInterP[index].serialNumber, 
+                      contrProtElec: lastInterP[index].contrProtElec, 
+                      resConElec: lastInterP[index].resConElec, 
+                      mesContrTen: lastInterP[index].mesContrTen, 
+                      mesContrInt: lastInterP[index].mesContrInt, 
+                      contrParReg: lastInterP[index].contrParReg, 
+                      contrEnclTher: lastInterP[index].contrEnclTher, 
+                      contrEtanFri: lastInterP[index].contrEtanFri, 
+                      contrEtatCal: lastInterP[index].contrEtatCal,
+                      netEchAir: lastInterP[index].netEchAir, 
+                      contrFoncVentil: lastInterP[index].contrFoncVentil, 
+                      contrEvacCon: lastInterP[index].contrEvacCon, 
+                      mesTempFonc: lastInterP[index].mesTempFonc, 
+                      contrVaseExp: lastInterP[index].contrVaseExp, 
+                      contrVisuEau: lastInterP[index].contrVisuEau, 
+                      contrFoncCirc: lastInterP[index].contrFoncCirc, 
+                      contrEtanSouHydrau: lastInterP[index].contrEtanSouHydrau, 
+                      contrAnodeBall: lastInterP[index].contrAnodeBall, 
+                      contrFluideCal: lastInterP[index].contrFluideCal, 
+                      contrProtAnti: lastInterP[index].contrProtAnti, 
+                      contrVisuEns: lastInterP[index].contrVisuEns, 
+                      essaiFonc: lastInterP[index].essaiFonc, 
+                      aideClient: lastInterP[index].aideClient, 
+                      purge: lastInterP[index].purge, 
+                      nettEntrFiltre: lastInterP[index].nettEntrFiltre, 
+                      contrPressVase: lastInterP[index].contrPressVase, 
+                      regonVase: lastInterP[index].regonVase, 
+                      defautsCorr: lastInterP[index].defautsCorr, 
+                      aPrevoir: lastInterP[index].aPrevoir, 
+                      recommandation: lastInterP[index].recommandation, 
+                      gains: lastInterP[index].gains, 
+                      userId: lastInterP[index].userId
+                  )   )));
   }
 }

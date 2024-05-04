@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -65,4 +56,34 @@ class DefaultFirebaseOptions {
     storageBucket: 'gestionnaireinterventions.appspot.com',
     iosBundleId: 'com.example.gestionnaireInterventions',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBn1afiZfhbLN9j6OJyBnfMrAXvy0acgIs',
+    appId: '1:766234130685:web:35925c5a6cb6b3ea0aa694',
+    messagingSenderId: '766234130685',
+    projectId: 'gestionnaireinterventions',
+    authDomain: 'gestionnaireinterventions.firebaseapp.com',
+    storageBucket: 'gestionnaireinterventions.appspot.com',
+    measurementId: 'G-N0MVZ1GBDK',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBmrqdAg6dFkWc71L1HURHene-6aHrTOpo',
+    appId: '1:766234130685:ios:94106b6c2b0522910aa694',
+    messagingSenderId: '766234130685',
+    projectId: 'gestionnaireinterventions',
+    storageBucket: 'gestionnaireinterventions.appspot.com',
+    iosBundleId: 'com.example.gestionnaireInterventions',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBn1afiZfhbLN9j6OJyBnfMrAXvy0acgIs',
+    appId: '1:766234130685:web:618246c8ee158dfd0aa694',
+    messagingSenderId: '766234130685',
+    projectId: 'gestionnaireinterventions',
+    authDomain: 'gestionnaireinterventions.firebaseapp.com',
+    storageBucket: 'gestionnaireinterventions.appspot.com',
+    measurementId: 'G-MFK57V8VKV',
+  );
+
 }

@@ -1,11 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
-import 'package:gestionnaire_interventions/component/connect.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/ClientPicker.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MyTextField.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/PickerButton.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/StackedField.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/Structure/DoubleTextfield.dart';
+import 'package:gestionnaire_interventions/Components/Structure/PickerData.dart';
+import 'package:gestionnaire_interventions/Components/Tools/FormatTool/OnetoTwoInt.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/view/Add/AddVar.dart';
 import 'package:gestionnaire_interventions/view/Add/Pompe/Part2P.dart';
-
-import '../../../component/Search.dart';
 
 class Part1P extends StatefulWidget {
   const Part1P({super.key});
@@ -25,158 +32,114 @@ class _Part1PState extends State<Part1P> {
   String date = "";
   String miseRoute = "";
   //variables fonctionelles
-  List<bool> changedC = [false];
-
-  bool changedD = false;
-  DateTime dateD = DateTime.now();
-
-  bool changedR = false;
-  DateTime dateR = DateTime.now();
-
+  PickerData startDate = PickerData(
+      title: "Date de début",
+      dateTime: DateTime.now(),
+      abortFunc: () {},
+      validateFunc: () {},
+      onTimeChanged: (p0) {},
+      selected: false);
+  PickerData routeDate = PickerData(
+      title: "Date de mise en route",
+      dateTime: DateTime.now(),
+      abortFunc: () {},
+      validateFunc: () {},
+      onTimeChanged: (p0) {},
+      selected: false);
   String errorText = "";
   @override
   Widget build(BuildContext context) {
+    startDate.abortFunc = () {
+      abort1Func();
+    };
+    startDate.validateFunc = () {
+      validate1Func();
+    };
+    startDate.onTimeChanged = (p0) {
+      startDate.dateTime = p0;
+    };
+
+    routeDate.abortFunc = () {
+      abort2Func();
+    };
+    routeDate.validateFunc = () {
+      validate2Func();
+    };
+    routeDate.onTimeChanged = (p0) {
+      routeDate.dateTime = p0;
+    };
     return AddTemplate(
         title: "Pompe à chaleur",
         errorText: errorText,
         Body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            title("Infos intervention :"),
-            Container(
-              width: MediaQuery.sizeOf(context).width - 20,
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.85),
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-                  ]),
+            const TitleText(title: "Infos intervention :"),
+            const Gap(5),
+            CloudBack(
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  bigTextField(place, "Pièce de l'entretiens"),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 55,
-                        width: 150,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            dateAlgo2();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  changedD ? mainColor() : Colors.transparent,
-                              surfaceTintColor: Colors.transparent,
-                              foregroundColor: mainColor(),
-                              shadowColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: const BorderSide(color: Colors.grey))),
-                          child: Text(changedD ? date : "Date",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: changedD ? Colors.white : textColor(),
-                                  fontSize: 16)),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        height: 55,
-                        width: 150,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            clientAlgo();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: changedC[0]
-                                  ? mainColor()
-                                  : Colors.transparent,
-                              surfaceTintColor: Colors.transparent,
-                              foregroundColor: mainColor(),
-                              shadowColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: const BorderSide(color: Colors.grey))),
-                          child: Text(
-                              changedC[0]
-                                  ? theClient.nom + " " + theClient.prenom
-                                  : "Client",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      changedC[0] ? Colors.white : textColor(),
-                                  fontSize: 16)),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  bigTextField(type, "Entrez le type de la machine"),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      litleTextField(marque, "Marque", false),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      litleTextField(puissance, "Puissance", false)
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 55,
-                    width: 300,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        dateAlgo1();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              changedR ? mainColor() : Colors.transparent,
-                          surfaceTintColor: Colors.transparent,
-                          foregroundColor: mainColor(),
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              side: const BorderSide(color: Colors.grey))),
-                      child: Text(
-                          changedR ? miseRoute : "Date de mise en route",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: changedR ? Colors.white : textColor(),
-                              fontSize: 16)),
+                  const Gap(20),
+                  SizedBox(
+                    height: 50,
+                    child: MyTextField(
+                      controller: place,
+                      hintText: "Pièce de l'entretiens",
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  const Gap(20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: SizedBox(
+                      height: 50,
+                      child: Row(
+                        children: [
+                          Expanded(child: PickerButton(data: startDate),),
+                          const Gap(20),
+                          ClientPicker(update: ((p0) {
+                            theClientId = p0.uid;
+                          }))
+                        ],
+                      ),
+                    ),
                   ),
-                  bigTextField(serialNumber, "numéro de série"),
-                  const SizedBox(
-                    height: 20,
+                  const Gap(20),
+                  SizedBox(
+                    height: 50,
+                    child: MyTextField(
+                      controller: type,
+                      hintText: "Entrez le type de la machine",
+                    ),
                   ),
+                  const Gap(20),
+                  StackedField(
+                      data: DoubleTextfield(
+                          title1: "Marque",
+                          title2: "Puissance",
+                          controller1: marque,
+                          controller2: puissance)),
+                  const Gap(20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: PickerButton(data: routeDate),
+                    ),
+                  ),
+                  const Gap(20),
+                  SizedBox(
+                    height: 50,
+                    child: MyTextField(
+                      controller: serialNumber,
+                      hintText: "numéro de série",
+                    ),
+                  ),
+                  const Gap(20),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const Gap(20),
           ],
         ),
         func: Part1CFunc,
@@ -185,16 +148,16 @@ class _Part1PState extends State<Part1P> {
 
   //fonctionelle de la page
   void Part1CFunc() {
-    if (date != "") {
+    if (startDate.title != "Date de début") {
       if (theClientId != "") {
         pompeData["identite"] = "pompe";
         pompeData["place"] = place.text;
-        pompeData["date"] = date;
+        pompeData["date"] = startDate.title;
         pompeData["clientId"] = theClientId;
         pompeData["type"] = type.text;
         pompeData["marque"] = marque.text;
         pompeData["puissance"] = puissance.text;
-        pompeData["miseRoute"] = miseRoute;
+        pompeData["miseRoute"] = routeDate.title;
         pompeData["serialNumber"] = serialNumber.text;
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Part2P()));
@@ -210,198 +173,41 @@ class _Part1PState extends State<Part1P> {
     }
   }
 
-  // fonctionelle bouton Client
-  void clientAlgo() async {
-    await showSearch(
-        context: context,
-        delegate:
-            Search(SearchContent: clients, Dest3: false, update: changedC));
+///////////////////////////////////////////////////////////////
+  /// logique des boutons de date de début
+  void abort1Func() {
     setState(() {
-      theClientId = theClient.uid;
+      startDate.dateTime = DateTime.now();
+      startDate.title =
+          "${oneToTwoInt(startDate.dateTime.day)}/${oneToTwoInt(startDate.dateTime.month)}/${oneToTwoInt(startDate.dateTime.year)}";
+      startDate.selected = true;
     });
   }
 
-  // fonctionelle bouton date
-  void dateAlgo1() {
-    showCupertinoModalPopup(
-        context: context,
-        builder: (BuildContext context) => Center(
-            child: Container(
-                height: 430,
-                width: 350,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 350,
-                      width: 350,
-                      child: CupertinoDatePicker(
-                        initialDateTime: dateR,
-                        onDateTimeChanged: (DateTime newTime) {
-                          setState(() {
-                            dateR = newTime;
-                          });
-                        },
-                        use24hFormat: true,
-                        mode: CupertinoDatePickerMode.date,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 45,
-                          width: MediaQuery.sizeOf(context).width / 2 - 65,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                dateR = DateTime.now();
-                                miseRoute =
-                                    "${twoDigits(dateR.day)}/${twoDigits(dateR.month)}/${dateR.year}";
-                                changedR = true;
-                              });
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey.shade400,
-                                foregroundColor: mainColor(),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            child: Text(
-                              "Retour",
-                              style: TextStyle(
-                                  color: textColor(),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Container(
-                          height: 45,
-                          width: MediaQuery.sizeOf(context).width / 2 - 65,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                miseRoute =
-                                    "${twoDigits(dateR.day)}/${twoDigits(dateR.month)}/${dateR.year}";
-                                changedR = true;
-                              });
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: mainColor(),
-                                foregroundColor: Colors.grey,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            child: const Text(
-                              "Valider",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ))));
+  void validate1Func() {
+    setState(() {
+      startDate.title =
+          "${oneToTwoInt(startDate.dateTime.day)}/${oneToTwoInt(startDate.dateTime.month)}/${oneToTwoInt(startDate.dateTime.year)}";
+      startDate.selected = true;
+    });
   }
 
-  // fonctionelle bouton date
-  void dateAlgo2() {
-    showCupertinoModalPopup(
-        context: context,
-        builder: (BuildContext context) => Center(
-            child: Container(
-                height: 430,
-                width: 350,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 350,
-                      width: 350,
-                      child: CupertinoDatePicker(
-                        initialDateTime: dateD,
-                        onDateTimeChanged: (DateTime newTime) {
-                          setState(() {
-                            dateD = newTime;
-                          });
-                        },
-                        use24hFormat: true,
-                        mode: CupertinoDatePickerMode.date,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 45,
-                          width: MediaQuery.sizeOf(context).width / 2 - 65,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                dateD = DateTime.now();
-                                date =
-                                    "${twoDigits(dateD.day)}/${twoDigits(dateD.month)}/${dateD.year}";
-                                changedD = true;
-                              });
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey.shade400,
-                                foregroundColor: mainColor(),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            child: Text(
-                              "Retour",
-                              style: TextStyle(
-                                  color: textColor(),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Container(
-                          height: 45,
-                          width: MediaQuery.sizeOf(context).width / 2 - 65,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                date =
-                                    "${twoDigits(dateD.day)}/${twoDigits(dateD.month)}/${dateD.year}";
-                                changedD = true;
-                              });
-                              Navigator.pop(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: mainColor(),
-                                foregroundColor: Colors.grey,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            child: const Text(
-                              "Valider",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ))));
+///////////////////////////////////////////////////////////////
+  /// logique des boutons de date route
+  void abort2Func() {
+    setState(() {
+      routeDate.dateTime = DateTime.now();
+      routeDate.title =
+          "${oneToTwoInt(routeDate.dateTime.day)}/${oneToTwoInt(routeDate.dateTime.month)}/${oneToTwoInt(routeDate.dateTime.year)}";
+      routeDate.selected = true;
+    });
+  }
+
+  void validate2Func() {
+    setState(() {
+      routeDate.title =
+          "${oneToTwoInt(routeDate.dateTime.day)}/${oneToTwoInt(routeDate.dateTime.month)}/${oneToTwoInt(routeDate.dateTime.year)}";
+      routeDate.selected = true;
+    });
   }
 }

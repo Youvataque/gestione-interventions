@@ -1,10 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/connect.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
-import 'package:gestionnaire_interventions/main.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/InfoDoubleText.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/connect.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
+import 'package:gestionnaire_interventions/main.dart';
+import 'package:gestionnaire_interventions/view/Logins/SignIn.dart';
+
+///////////////////////////////////////////////////////////////
+/// Page profil
 class Profil extends StatefulWidget {
   const Profil({super.key});
 
@@ -13,6 +21,7 @@ class Profil extends StatefulWidget {
 }
 
 class _ProfilState extends State<Profil> {
+
   List<String> titleListE = [
     "Nom de l'entreprise :",
     "Contact Téléphone :",
@@ -34,130 +43,85 @@ class _ProfilState extends State<Profil> {
     entrepriseData.adresse
   ];
   List<String> titleListP = [
-    "Nom de l'utilisateur :",
-    "Prenom de l'utilisateur :",
-    "Contact Mail :",
-    "Contact téléphone :"
+      "Nom de l'utilisateur :",
+      "Prenom de l'utilisateur :",
+      "Contact Mail :",
+      "Contact téléphone :"
   ];
   List<String> contentListP = [
-    userData[getUserFromInter()].nom,
-    userData[getUserFromInter()].prenom,
-    userData[getUserFromInter()].mail,
-    userData[getUserFromInter()].phone
+      userData[getUserClientFromInter(FirebaseAuth.instance.currentUser!.uid)].nom,
+      userData[getUserClientFromInter(FirebaseAuth.instance.currentUser!.uid)].prenom,
+      userData[getUserClientFromInter(FirebaseAuth.instance.currentUser!.uid)].mail,
+      userData[getUserClientFromInter(FirebaseAuth.instance.currentUser!.uid)].phone
   ];
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          TopOfView(
-            title: "Profil et Entreprise",
-            height: 60,
-            width: MediaQuery.sizeOf(context).width - 20,
-            lead: Icon(
-              CupertinoIcons.person_circle_fill,
-              size: 40,
-              color: textColor(),
-            ),
-          ),
-          const SizedBox(
-            height: 60,
-          ),
-          title("Informations Entreprise :"),
-          Body(titleListE, contentListE, contentListE.length),
-          const SizedBox(
-            height: 30,
-          ),
-          title("Informations Utilisateur :"),
-          Body(titleListP, contentListP, contentListP.length),
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            height: 55,
-            width: 200,
-            child: ElevatedButton(
-              onPressed: () {
-                SignOut();
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: mainColor(),
-                  foregroundColor: Colors.grey,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
-              child: const Text(
-                "Deconnexion",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 120,
-          )
-        ],
-      ),
-    );
+    return body();
   }
 
-  Column Body(List<String> title, List<String> content, int length) {
-    // constructeur du champ d'information
+///////////////////////////////////////////////////////////////
+/// corp du code
+Column body() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const TitleText(title: "Informations Entreprise :"),
+      const Gap(5),
+      infoGen(titleListE, contentListE, contentListE.length),
+      const Gap(30),
+      const TitleText(title: "Informations Utilisateur :"),
+      const Gap(5),
+      infoGen(titleListP, contentListP, contentListP.length),
+      const Gap(30),
+      MainButton(
+        func: () => SignOut(),
+        title: "Déconnexion",
+      ),
+      const Gap(30)
+    ],
+  );
+}
+
+///////////////////////////////////////////////////////////////
+/// génère les informations d'entreprise
+  Column infoGen(List<String> title, List<String> content, int length) { // constructeur du champ d'information
     return Column(
       children: [
-        Container(
-            width: MediaQuery.sizeOf(context).width - 20,
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.85),
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-                ]),
-            child: ListView.builder(
-                padding: EdgeInsets.only(top: 13, bottom: 13),
-                shrinkWrap: true,
-                itemCount: length,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        title[index],
-                        style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                            color: textColor()),
-                      ),
-                      Text(
-                        content[index],
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: mainColor()),
-                      ),
-                      const SizedBox(
-                        height: 7,
-                      )
-                    ],
-                  );
-                }))
+        CloudBack(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Column(
+              children: List.generate(
+                content.length,
+                (index) => Column(
+                  children: [
+                    InfoDoubleText(title: title[index], content: content[index]),
+                    const Gap(15)
+                  ],
+                )
+              ),
+            ),
+          )
+        )
       ],
     );
   }
 
+///////////////////////////////////////////////////////////////
+/// Logique de déconnexion
   Future SignOut() async {
     try {
-      await FirebaseAuth.instance.signOut();
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MainApp(),
-          ));
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const SignIn()),
+        (Route<dynamic> route) => false, 
+      );
+      Future.delayed(
+        Duration(seconds: 2),
+        () {
+          FirebaseAuth.instance.signOut();
+        }
+      );
     } catch (error) {
       print(error.toString());
     }

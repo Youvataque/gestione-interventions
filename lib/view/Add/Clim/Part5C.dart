@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/tool.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MyTextField.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/StackedField.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/Structure/DoubleTextfield.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:gestionnaire_interventions/main.dart';
 import 'package:gestionnaire_interventions/view/Add/AddVar.dart';
 
-import '../../../component/connect.dart';
+import '../../../oldComponent/connect.dart';
 
 class Part5C extends StatefulWidget {
   const Part5C({super.key});
@@ -84,63 +89,65 @@ class _Part5CState extends State<Part5C> {
 
   Column Body() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title("Infos groupe exterieur :"),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
-              boxShadow: [
-                BoxShadow(color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-              ],
-              borderRadius: BorderRadius.circular(20)),
-          width: MediaQuery.sizeOf(context).width - 20,
+        const TitleText(title: "Infos groupe exterieur :"),
+        const Gap(5),
+        CloudBack(
           child: Column(
             children: [
               const SizedBox(
                 height: 20,
               ),
-              Pointer(" Température à la fin "),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  litleTextField(coldF, "Mode froid", true),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  litleTextField(hotF, "Mode chaud", true)
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Pointer(" Température à la fin ", context),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Pointer(" Mesure du débit d'air "),
+              StackedField(
+                data: DoubleTextfield(
+                  title1: "Mode froid",
+                  title2: "Mode chaud",
+                  controller1: coldF,
+                  controller2: hotF
+                )
+              ),
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SquareTextField(b1, "B1"),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  SquareTextField(b2, "B2"),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  SquareTextField(b3, "B3"),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  SquareTextField(b4, "B4"),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  SquareTextField(b5, "B5"),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Pointer(" Mesure du débit d'air ", context),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SquareTextField(b1, "B1"),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    SquareTextField(b2, "B2"),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    SquareTextField(b3, "B3"),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    SquareTextField(b4, "B4"),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    SquareTextField(b5, "B5"),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -157,24 +164,15 @@ class _Part5CState extends State<Part5C> {
 
   Container SquareTextField(TextEditingController controller, String hintText) {
     return Container(
-      width: 52,
-      height: 55,
-      child: TextFormField(
+      height: 45,
+      width: 45,
+      child: MyTextField(
+        fontSize: 15,
+        padding: 12,
+        noPadding: true,
         controller: controller,
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-            hintStyle: TextStyle(
-                fontWeight: FontWeight.bold, color: textColor(), fontSize: 16),
-            contentPadding: const EdgeInsets.only(top: 15, bottom: 15),
-            hintText: hintText,
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: const BorderSide(color: Colors.grey)),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            )),
-      ),
+        hintText: hintText,
+      )
     );
   }
 }

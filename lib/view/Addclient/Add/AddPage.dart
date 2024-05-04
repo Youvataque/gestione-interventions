@@ -1,12 +1,25 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestionnaire_interventions/component/Struct.dart';
-import 'package:gestionnaire_interventions/component/Tool.dart';
-import 'package:gestionnaire_interventions/component/connect.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/MyTextField.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/StackedField.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/TopOfView.dart';
+import 'package:gestionnaire_interventions/Components/Structure/DoubleTextfield.dart';
+import 'package:gestionnaire_interventions/Components/Tools/ErrorTools/LoginsError.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/BackTemplate.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/ErrorView.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/Struct.dart';
+import 'package:gestionnaire_interventions/oldComponent/connect.dart';
 import 'package:gestionnaire_interventions/main.dart';
 
+///////////////////////////////////////////////////////////////
+/// page d'ajout (peut être appelé en tant que page d'edit)
 class AddPage extends StatefulWidget {
   final Client? myClient;
   final bool add;
@@ -26,261 +39,202 @@ class _AddPageState extends State<AddPage> {
   String errorText = "";
   TextEditingController nom = TextEditingController();
   TextEditingController prenom = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController mail = TextEditingController();
-  TextEditingController adresse = TextEditingController();
-
+  List<TextEditingController> controller = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController()
+  ];
+  List<TextInputType> typeInput = [
+    TextInputType.emailAddress,
+    TextInputType.phone,
+    TextInputType.streetAddress
+  ];
+  List<String> hintText = [];
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("src/BackgroundAppWhite.jpg"),
-                  fit: BoxFit.cover)),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TopOfView(
-                    width: MediaQuery.sizeOf(context).width - 20,
-                    height: 60,
-                    title: widget.add
-                        ? "Ajoutons un client"
-                        : "Modifions un client",
-                    lead: Icon(
-                      CupertinoIcons.person_circle,
-                      size: 40,
-                      color: textColor(),
-                    ),
-                  ),
-                  Body(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 55,
-                        width: MediaQuery.sizeOf(context).width / 2 - 45,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey.shade400,
-                              foregroundColor: mainColor(),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          child: Text(
-                            "Retour",
-                            style: TextStyle(
-                                color: textColor(),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 30,
-                      ),
-                      Container(
-                        height: 55,
-                        width: MediaQuery.sizeOf(context).width / 2 - 45,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            widget.add ? addClient() : EditClient();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: mainColor(),
-                              foregroundColor: Colors.grey,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          child: Text(
-                            widget.add ? "Envoyer" : "Modifier",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Text(
-                      errorText,
-                      style: const TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )),
+    hintText = [
+      widget.add ? "Entrez l'adresse email" : widget.myClient!.mail,
+      widget.add ? "Entrez le numéro de téléphone" : widget.myClient!.phone,
+      widget.add ? "Entrez l'adresse du client" : widget.myClient!.adresse,
+    ];
+    return BackTemplate(
+      content: body(),
     );
   }
 
-  Column Body() {
+///////////////////////////////////////////////////////////////
+/// corp du code
+  SingleChildScrollView body() {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TopOfView(
+            width: MediaQuery.sizeOf(context).width - 30,
+            height: 55,
+            withBack: true,
+            passedContext: context,
+            title: widget.add
+                ? "Ajoutons un client"
+                : "Éditons un client",
+            lead: Icon(
+              CupertinoIcons.person_circle,
+              size: 40,
+              color: Theme.of(context).textTheme.labelLarge!.color,
+            ),
+          ),
+          pageGen(),
+          Align(
+            alignment: Alignment.center,
+            child: ErrorView(
+              key: UniqueKey(),
+              error: errorText
+            ),
+          ),
+          MainButton(func: () => widget.add ? addClient() : EditClient(), title: widget.add? "Ajouter" : "Modifier"),
+          
+        ],
+      ),
+    );
+  }
+
+///////////////////////////////////////////////////////////////
+/// générateur de page
+  Column pageGen() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(
           height: 80,
         ),
-        title(widget.add ? "Entrez ses coordonées" : "Modifiez ses coordonées"),
-        Container(
-          width: MediaQuery.sizeOf(context).width - 20,
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
-              borderRadius: BorderRadius.circular(25),
-              boxShadow: const [BoxShadow(blurRadius: 7, color: Colors.grey)]),
-          child: Column(
+        TitleText(title: widget.add ? "Entrez ses coordonées :" : "Modifiez ses coordonées :"),
+        const Gap(5),
+        CloudBack(
+          child:  Column(
             children: [
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  litleTextField(
-                      nom,
-                      widget.add ? "Entrez le nom" : widget.myClient!.nom,
-                      false),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  litleTextField(
-                      prenom,
-                      widget.add ? "Entrez le prenom" : widget.myClient!.prenom,
-                      false)
-                ],
+              StackedField(
+                data: DoubleTextfield(
+                  title1: widget.add ? "Le nom" : widget.myClient!.nom,
+                  title2: widget.add ? "Le prénom" : widget.myClient!.prenom,
+                  controller1: nom,
+                  controller2: prenom
+                )
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              bigTextField(
-                  mail,
-                  widget.add
-                      ? "Entrez l'adresse email"
-                      : widget.myClient!.mail),
-              const SizedBox(
-                height: 20,
-              ),
-              bigTextField(
-                  phone,
-                  widget.add
-                      ? "Entrez le numéro de téléphone"
-                      : widget.myClient!.phone),
-              const SizedBox(
-                height: 20,
-              ),
-              bigTextField(
-                  adresse,
-                  widget.add
-                      ? "Entrez l'adresse du client"
-                      : widget.myClient!.adresse),
-              const SizedBox(
-                height: 20,
-              ),
+              const Gap(20),
+              Column(
+                children: List.generate(
+                  controller.length,
+                  (index) => Column(
+                    children: [
+                      MyTextField(
+                        keyboardType: typeInput[index],
+                        controller: controller[index],
+                        hintText: hintText[index]
+                      ),
+                      const Gap(20)
+                    ],
+                  )
+                ),
+              )
             ],
           ),
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        const Gap(20)
       ],
     );
   }
 
+///////////////////////////////////////////////////////////////
+/// Logique d'ajout d'un client
   void addClient() async {
+    TextEditingController mail = controller[0];
+    TextEditingController phone = controller[1];
+    TextEditingController adresse = controller[2];
     DocumentReference docRef = db.collection("Clients").doc();
-    if (nom.text != "") {
-      if (prenom.text != "") {
-        if (mail.text != "") {
-          if (phone.text != "") {
-            if (adresse.text != "") {
-              try {
-                docRef.set({
-                  if (nom.text != "") "nom": nom.text,
-                  if (prenom.text != "") "prenom": prenom.text,
-                  if (mail.text != "") "mail": mail.text,
-                  if (phone.text != "") "phone": phone.text,
-                  if (adresse.text != "") "adresse": adresse.text,
-                });
-                setState(() {
-                  errorText = "L'utilisateur a été ajouté !";
-                });
-                clients = await getClients();
-                setState(() {});
-                Future.delayed(Duration(seconds: 1), () {
-                  setState(() {
-                    errorText = "";
-                  });
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => MainApp()));
-                });
-              } catch (error) {
-                setState(() {
-                  errorText = error.toString();
-                });
-              }
-            } else {
-              setState(() {
-                errorText = "Veuillez entrer une adresse !";
-              });
-            }
-          } else {
-            setState(() {
-              errorText = "Veuillez entrer un numéro de téléphone !";
-            });
-          }
-        } else {
-          setState(() {
-            errorText = "Veuillez entrer un email !";
-          });
-        }
-      } else {
-        setState(() {
-          errorText = "Veuillez entrer un prenom !";
-        });
-      }
-    } else {
+    if (nom.text == "") {
       setState(() {
-        errorText = "Veuillez entrer un nom !";
+        errorText = "Vous devez saisir le nom.";
       });
+      return;
     }
-    clients = await getClients();
-    setState(() {});
-  }
-
-  void EditClient() async {
-    DocumentReference docRef =
-        db.collection("Clients").doc(widget.myClient!.uid);
+    if (prenom.text == "") {
+      setState(() {
+        errorText = "Vous devez saisir le prenom.";
+      });
+      return;
+    }
+    if (phone.text == "") {
+      setState(() {
+        errorText = "Vous devez saisir le numéro de téléphone";
+      });
+      return;
+    }
+    if (mail.text == "") {
+      setState(() {
+        errorText = "Vous devez saisir l'email.";
+      });
+      return;
+    }
+    if (adresse.text == "") {
+      setState(() {
+        errorText = "Vous devez saisir l'adresse.";
+      });
+      return;
+    }
     try {
       docRef.set({
-        if (nom.text != "") "nom": nom.text,
-        if (prenom.text != "") "prenom": prenom.text,
-        if (mail.text != "") "mail": mail.text,
-        if (phone.text != "") "phone": phone.text,
-        if (adresse.text != "") "adresse": adresse.text,
-      }, SetOptions(merge: true));
-      setState(() {
-        errorText = "L'utilisateur a été modifié !";
-      });
-      clients = await getClients();
-      setState(() {});
-      Future.delayed(Duration(seconds: 1), () {
-        setState(() {
-          errorText = "";
-        });
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainApp()));
-      });
+      "nom": nom.text,
+      "prenom": prenom.text,
+      "mail": mail.text,
+      "phone": phone.text,
+      "adresse": adresse.text,
+    });
+    setState(() {
+      errorText = "Client enregistré !";
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const MainApp()));
+    });
+    clients = await getClients();
+    setState(() {});
     } catch (error) {
-      setState(() {
-        errorText = error.toString();
-      });
+      errorText = loginsError(error.toString());
     }
   }
+
+///////////////////////////////////////////////////////////////
+/// Logique d'édit d'un client
+  void EditClient() async {
+    TextEditingController mail = controller[0];
+    TextEditingController phone = controller[1];
+    TextEditingController adresse = controller[2];
+    DocumentReference docRef = db.collection("Clients").doc(widget.myClient!.uid);
+      try {
+        docRef.set({
+          if (nom.text != "") "nom": nom.text,
+          if (prenom.text != "") "prenom": prenom.text,
+          if (mail.text != "") "mail": mail.text,
+          if (phone.text != "") "phone": phone.text,
+          if (adresse.text != "") "adresse": adresse.text,
+        }, SetOptions(merge: true));
+        setState(() {
+          errorText = "L'utilisateur a été modifié !";
+        });
+        clients = await getClients();
+        setState(() {});
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const MainApp()));
+        });
+      } catch (error) {
+        setState(() {
+          errorText = error.toString();
+        });
+      }
+  }
 }
+

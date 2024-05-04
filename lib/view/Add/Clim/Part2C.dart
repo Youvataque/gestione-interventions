@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:gestionnaire_interventions/component/Tool.dart';
+import 'package:gap/gap.dart';
+import 'package:gestionnaire_interventions/Components/ButtonTemplates/SwitcherLikeField.dart';
+import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
+import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:flutter/material.dart';
 import 'package:gestionnaire_interventions/view/Add/AddVar.dart';
 import 'package:gestionnaire_interventions/view/Add/Clim/Part3C.dart';
@@ -28,37 +31,51 @@ class _Part2CState extends State<Part2C> {
     climData["etat"] = etat.text;
     climData["observD"] = observD.text;
     climData["testFuite"] = testFuite[0];
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Part3C()));
+    Navigator.push(
+        context, MaterialPageRoute(
+            builder: (context) => Part3C()
+        )
+    );
   }
 
   Column Body() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        title("Observations de base :"),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.85),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(color: Colors.grey.withOpacity(0.7), blurRadius: 7)
-              ]),
-          width: MediaQuery.sizeOf(context).width - 20,
+        const TitleText(title: "Observations de base :"),
+        const Gap(5),
+        CloudBack(
           child: Column(
             children: [
               const SizedBox(
                 height: 20,
               ),
-              miniTextFieldLikeBig(etat, "État de la machine(de 1 à 10)"),
+              miniTextFieldLikeBig(etat, "État de la machine(de 1 à 10)", context),
               const SizedBox(
                 height: 20,
               ),
-              BoolField(
-                  controller: testFuite,
-                  hintText: "Passage du testeur de fuite"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: SizedBox(
+                  height: 50,
+                  child: SwitcherLikeField(
+                    title: "Passage du testeur de fuite",
+                    statut: testFuite[0],
+                    onChanged: ((p0) {
+                      setState(() {
+                        testFuite[0] = p0;
+                      });
+                    })
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 20,
               ),
-              TextArea(observD, "Observations divers :"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: textArea(observD, "Observations diverses :", context),
+              ),
               const SizedBox(
                 height: 20,
               )
