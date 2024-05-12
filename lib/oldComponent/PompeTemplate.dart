@@ -219,7 +219,7 @@ Center part1() {
               scale: 20,
             ),
             Text(
-              "Sols Energies Bains",
+              "NewBat",
               style: TextStyle(
                   color: textColor(),
                   fontSize: 16,
