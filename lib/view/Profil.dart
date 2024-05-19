@@ -8,7 +8,6 @@ import 'package:gestionnaire_interventions/Components/ViewTemplates/InfoDoubleTe
 import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
 import 'package:gestionnaire_interventions/oldComponent/connect.dart';
 import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
-import 'package:gestionnaire_interventions/main.dart';
 import 'package:gestionnaire_interventions/view/Logins/SignIn.dart';
 
 ///////////////////////////////////////////////////////////////

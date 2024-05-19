@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
 import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/InterSearchDelegate.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/LitleComponent.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
 import 'package:gestionnaire_interventions/oldComponent/Struct.dart';
 import 'package:gestionnaire_interventions/oldComponent/connect.dart';
@@ -25,7 +28,16 @@ class _InterventionState extends State<Intervention> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TitleText(title: "Toutes vos interventions :"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const TitleText(title: "Toutes vos interventions :"),
+              Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: rightButton(),
+              )
+            ],
+          ),
           const Gap(5),
           body(
             Column(
@@ -55,6 +67,8 @@ class _InterventionState extends State<Intervention> {
     );
   }
 
+///////////////////////////////////////////////////////////////
+/// corp du code
   Widget body(Widget content) {
     return CloudBack(
       child: Column(
@@ -66,8 +80,43 @@ class _InterventionState extends State<Intervention> {
     );
   }
 
+///////////////////////////////////////////////////////////////
+/// bouton de recherche
+  Widget rightButton() {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          myShadow(context)
+        ]
+      ),
+      padding: EdgeInsets.zero,
+      child: InkWell(
+        child: Icon(
+          CupertinoIcons.search,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
+        ),
+        onTap: () async {
+          await showSearch(
+            context: context,
+            delegate: InterSearchDelegate(
+              searchContent: allInterClientId,
+              context: context,
+              func1: (p0) => func1(p0),
+            ),
+          );
+        },
+      )
+    );
+  }
+
+///////////////////////////////////////////////////////////////
+/// Renvoie vers la page suivante
   void func1(int index) {
-    InterPompeClimType(allInterClientId[index]);
+    interPompeClimType(allInterClientId[index]);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -75,9 +124,10 @@ class _InterventionState extends State<Intervention> {
       )
     );
   }
-  // Remplissage des tableaux par type
 
-  void InterPompeClimType(String clientID) {
+///////////////////////////////////////////////////////////////
+/// remplissage des tableaux par type d'intervention
+  void interPompeClimType(String clientID) {
     InterClimC = [];
     InterPompeC = [];
     for (int x = 0; x < allInterC.length; x++) {
