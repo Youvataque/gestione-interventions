@@ -6,6 +6,7 @@ import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates
 import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/InfoBlock.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/InfoDoubleLine.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/InfoLine.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/PdfButton.dart';
 import 'package:gestionnaire_interventions/oldComponent/connect.dart';
 import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 
@@ -226,7 +227,10 @@ class _ClimTemplateState extends State<ClimTemplate> {
               (index) => presData(compTitle[index], compData[index])
             ),
           ),
-          routeZone()
+          routeZone(),
+          const Gap(10),
+          const PdfButton(),
+          const Gap(40),
         ],
       ),
     );
