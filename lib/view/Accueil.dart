@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
 import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/Previsu/ClimTemplate.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
 import 'package:gestionnaire_interventions/oldComponent/ClimTemplate.dart';
 import 'package:gestionnaire_interventions/oldComponent/PompeTemplate.dart';
@@ -95,7 +96,7 @@ class _AccueilState extends State<Accueil> {
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25))),
             child: clim
-                ? ClimTemplate(
+                ? ClimTemplates(
                     identite: lastInterC[index].identite,
                     place: lastInterC[index].place,
                     date: lastInterC[index].date,
