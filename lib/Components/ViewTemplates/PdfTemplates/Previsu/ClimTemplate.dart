@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/EnterpriseSigle.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/InfoBlock.dart';
@@ -9,7 +11,7 @@ import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 
 ///////////////////////////////////////////////////////////////
 /// Composant dénérant le template de la page de prévisualisation des interventions de type climatisation
-class ClimTemplates extends StatefulWidget {
+class ClimTemplate extends StatefulWidget {
   final String identite;
   final String place;
   final String date;
@@ -45,7 +47,7 @@ class ClimTemplates extends StatefulWidget {
   final String b4;
   final String b5;
   final String userId;
-  const ClimTemplates({
+  const ClimTemplate({
     super.key,
     required this.identite,
       required this.place,
@@ -85,10 +87,10 @@ class ClimTemplates extends StatefulWidget {
   });
 
   @override
-  State<ClimTemplates> createState() => _ClimTemplateState();
+  State<ClimTemplate> createState() => _ClimTemplateState();
 }
 
-class _ClimTemplateState extends State<ClimTemplates> {
+class _ClimTemplateState extends State<ClimTemplate> {
 
   List<Map<String, String>> headerData = [];
   List<List<Map<String, String>>> infoChantierData = [];
@@ -96,7 +98,7 @@ class _ClimTemplateState extends State<ClimTemplates> {
   List<List<Map<String, String>>> observData = [];
   List<List<Map<String, String>>> uniteData = [];
   List<List<Map<String, String>>> groupData = [];
-
+  List<List<Map<String, String>>> routeData = [];
   @override
   Widget build(BuildContext context) {
 
@@ -189,6 +191,12 @@ class _ClimTemplateState extends State<ClimTemplates> {
       ],
     ];
 
+    routeData = [
+      [
+        {"title" : "Température de sortie : ", "content" : "${widget.coldF == ""? "non testée" : widget.coldF}° pour le mode froid et ${widget.hotF == ""? "non testée" : widget.hotF}° pour le mode chaud."},
+      ],
+    ];
+
     return body();
   }
 
@@ -210,7 +218,8 @@ class _ClimTemplateState extends State<ClimTemplates> {
               compTitle.length,
               (index) => presData(compTitle[index], compData[index])
             ),
-          )
+          ),
+          routeZone()
         ],
       ),
     );
@@ -255,4 +264,74 @@ class _ClimTemplateState extends State<ClimTemplates> {
     );
   }
 
+  ///////////////////////////////////////////////////////////////
+  /// mes en forme les données avec les bons composants pour routeData
+  Widget routeZone() {
+
+    List<String> debit = [widget.b1, widget.b2, widget.b3, widget.b4, widget.b5];
+
+    /// titre du débit
+    Text title() {
+      return Text(
+        "Mesure du débit d'air :",
+        style: TextStyle(
+          fontSize: 9,
+          fontWeight: FontWeight.bold,
+          color: textColor()
+        ),
+      );
+    }
+
+    /// contenu du débit
+    Row content() {
+      return Row(
+        children: List.generate(
+          debit.length,
+          (index) => Row(
+            children: [
+              Text(
+                "B${index + 1} ->   ",
+                style: titleStyle()
+              ),
+              Text(
+                "${debit[index]}    ",
+                style: argStyle()
+              )
+            ],
+          )
+        )
+      );
+    }
+
+    /// corp du code
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.95,
+      child: Column(
+        children: [
+          const Gap(10),
+          InfoBlock(
+            title: "Mise en route",
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InfoDoubleLine(
+                  lines: routeData
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      title(),
+                      content()
+                    ],
+                  )
+                )
+              ],
+            )
+          )
+        ],
+      ),
+    );
+  }
 }

@@ -4,7 +4,6 @@ import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton
 import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/Previsu/ClimTemplate.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
-import 'package:gestionnaire_interventions/oldComponent/ClimTemplate.dart';
 import 'package:gestionnaire_interventions/oldComponent/PompeTemplate.dart';
 import 'package:gestionnaire_interventions/oldComponent/connect.dart';
 import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
@@ -96,7 +95,7 @@ class _AccueilState extends State<Accueil> {
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25))),
             child: clim
-                ? ClimTemplates(
+                ? ClimTemplate(
                     identite: lastInterC[index].identite,
                     place: lastInterC[index].place,
                     date: lastInterC[index].date,
