@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
 import 'package:gestionnaire_interventions/Components/FondamentalAppCompo/CloudBack.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/Previsu/ClimTemplate.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/Previsu/PompeTemplate.dart';
 import 'package:gestionnaire_interventions/Components/ViewTemplates/TitleText.dart';
-import 'package:gestionnaire_interventions/oldComponent/PompeTemplate.dart';
 import 'package:gestionnaire_interventions/oldComponent/connect.dart';
 import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 
@@ -87,7 +87,7 @@ class _AccueilState extends State<Accueil> {
         context: context,
         isScrollControlled: true,
         builder: ((BuildContext context) => Container(
-            height: MediaQuery.sizeOf(context).height - 40,
+            height: MediaQuery.sizeOf(context).height - 60,
             width: MediaQuery.sizeOf(context).width,
             decoration: const BoxDecoration(
                 color: Colors.white,

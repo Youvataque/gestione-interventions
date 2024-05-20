@@ -102,6 +102,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
   @override
   Widget build(BuildContext context) {
 
+    // récupération des données de l'entreprise
     headerData = [
       {"title" : "Adresse : ", "content" : entrepriseData.adresse},
       {"title" : "Ville : ", "content" : entrepriseData.ville},
@@ -110,6 +111,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
       {"title": "Email : ", "content" : entrepriseData.mail},
     ];
     
+    // récupération des données de l'intervention
     infoChantierData = [
       [
         {"title" : "Nom du technicien : ", "content" : "${userData[getUserClientFromInter(widget.userId)].nom} ${userData[getUserClientFromInter(widget.userId)].prenom}"},
@@ -129,6 +131,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
       ]
     ];
 
+    // récupération des données techniques
     infoTechData = [
       [
         {"title" : "Marque de l'unité : ", "content" : widget.marque},
@@ -139,6 +142,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
       ],
     ];
 
+    // récupération des données d'observation
     observData = [
       [
         {"title" : "État : ", "content" : "${widget.etat}/10"},
@@ -149,6 +153,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
       ],
     ];
     
+    // récupération des données de l'unité intérieure
     uniteData = [
       [
         {"title" : "Température d'arrivée : ", "content" : "${widget.cold == ""? "non testée" : widget.cold}° pour le mode froid et ${widget.hot == ""? "non testée" : widget.hot}° pour le mode chaud."},
@@ -173,6 +178,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
       ]
     ];
 
+    // récupération des données du groupe extérieur
     groupData = [
       [
         {"title" : "Type de compresseur : ", "content" : widget.typeExt},
@@ -191,6 +197,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
       ],
     ];
 
+    // récupération des données de la mise en route
     routeData = [
       [
         {"title" : "Température de sortie : ", "content" : "${widget.coldF == ""? "non testée" : widget.coldF}° pour le mode froid et ${widget.hotF == ""? "non testée" : widget.hotF}° pour le mode chaud."},

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestionnaire_interventions/Components/ButtonTemplates/MainButton.dart';
-import 'package:gestionnaire_interventions/oldComponent/ClimTemplate.dart';
-import 'package:gestionnaire_interventions/oldComponent/PompeTemplate.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/Previsu/ClimTemplate.dart';
+import 'package:gestionnaire_interventions/Components/ViewTemplates/PdfTemplates/Previsu/PompeTemplate.dart';
 import 'package:gestionnaire_interventions/oldComponent/Struct.dart';
 import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 

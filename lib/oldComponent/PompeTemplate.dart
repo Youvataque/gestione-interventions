@@ -12,7 +12,7 @@ import 'package:gestionnaire_interventions/oldComponent/oldTool.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-class PompeTemplate extends StatefulWidget {
+class PompeTemplates extends StatefulWidget {
   final String identite;
   final String place;
   final String date;
@@ -53,7 +53,7 @@ class PompeTemplate extends StatefulWidget {
   final String recommandation;
   final String gains;
   final String userId;
-  const PompeTemplate({
+  const PompeTemplates({
     super.key,
     required this.identite,
     required this.place,
@@ -98,10 +98,10 @@ class PompeTemplate extends StatefulWidget {
   });
 
   @override
-  State<PompeTemplate> createState() => _PompeTemplateState();
+  State<PompeTemplates> createState() => _PompeTemplateState();
 }
 
-class _PompeTemplateState extends State<PompeTemplate> {
+class _PompeTemplateState extends State<PompeTemplates> {
   bool screenable = false;
   ScreenshotController controller = ScreenshotController();
   @override
