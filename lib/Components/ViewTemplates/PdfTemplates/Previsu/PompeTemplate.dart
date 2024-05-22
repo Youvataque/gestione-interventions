@@ -216,7 +216,10 @@ class _PompeTemplateState extends State<PompeTemplate> {
       [{"title" : "Gains réalisables : ", "content" : widget.gains}],
     ];
 
-    return body();
+    return PdfButton(
+      clientName: getNameFromInter(widget.clientId),
+      child: body()
+    );
   }
 
   ///////////////////////////////////////////////////////////////
@@ -239,8 +242,6 @@ class _PompeTemplateState extends State<PompeTemplate> {
             ),
           ),
           const Gap(10),
-          const PdfButton(),
-          const Gap(40),
         ],
       ),
     );

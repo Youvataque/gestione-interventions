@@ -14,7 +14,7 @@ import 'package:gestionnaire_interventions/view/Profil.dart';
 ///////////////////////////////////////////////////////////////
 /// Appbar de l'application
 class MyTabbar extends StatefulWidget {
-  MyTabbar({
+  const MyTabbar({
     super.key,
   });
 

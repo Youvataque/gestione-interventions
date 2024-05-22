@@ -205,7 +205,10 @@ class _ClimTemplateState extends State<ClimTemplate> {
       ],
     ];
 
-    return body();
+    return PdfButton(
+      child: body(),
+      clientName: getNameFromInter(widget.clientId)
+    );
   }
 
   ///////////////////////////////////////////////////////////////
@@ -215,8 +218,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
     List<String> compTitle = ["Informations de chantier", "Informations techniques", "Observations visuelles", "Unité intérieure", "Groupe extérieur"];    
     List<List<List<Map<String, String>>>> compData = [infoChantierData, infoTechData, observData, uniteData, groupData];
 
-    return SingleChildScrollView(
-      child: Column(
+    return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Gap(10),
@@ -229,10 +231,7 @@ class _ClimTemplateState extends State<ClimTemplate> {
           ),
           routeZone(),
           const Gap(10),
-          const PdfButton(),
-          const Gap(40),
         ],
-      ),
     );
   }
 
