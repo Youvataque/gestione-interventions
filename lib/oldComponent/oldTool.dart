@@ -237,6 +237,7 @@ String getNameFromInter(String userId) {
   }
   return "";
 }
+
 ////////////////////////////////////////
 ////////////////////////////////////////
 
@@ -324,39 +325,6 @@ class _InterTemplateState extends State<InterTemplate> {
 ////////////////////////////////////////
 ////////////////////////////////////////
 
-Widget block(double width, Widget content) {
-  return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: textColor(),
-        ),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 3,
-          ),
-          content,
-          const SizedBox(
-            height: 3,
-          ),
-        ],
-      ));
-}
-
-////////////////////////////////////////
-////////////////////////////////////////
-
-Padding textRow(Widget part1, Widget part2) {
-  return Padding(
-      padding: const EdgeInsets.only(left: 5),
-      child: Wrap(
-        children: [part1, part2],
-      ));
-}
-
 Padding textTwoWrap(String part1, String part2) {
   return Padding(
     padding: const EdgeInsets.only(left: 5),
@@ -370,14 +338,23 @@ Padding textTwoWrap(String part1, String part2) {
   );
 }
 
+////////////////////////////////////////
+////////////////////////////////////////
+
 TextStyle argStyle() {
   return TextStyle(fontSize: 8, color: mainColor(), fontWeight: FontWeight.normal);
 }
+
+////////////////////////////////////////
+////////////////////////////////////////
 
 TextStyle titleStyle() {
   return TextStyle(
       fontSize: 9, fontWeight: FontWeight.bold, color: textColor());
 }
+
+////////////////////////////////////////
+////////////////////////////////////////
 
 TextStyle secStyle() {
   return TextStyle(
@@ -386,6 +363,7 @@ TextStyle secStyle() {
       color: textColor(),
       decoration: TextDecoration.underline);
 }
+
 ////////////////////////////////////////
 ////////////////////////////////////////
 
@@ -412,9 +390,6 @@ int getUserClientFromInter(String ref) {
   }
   return result;
 }
-
-////////////////////////////////////////
-///////////////
 
 ////////////////////////////////////////
 ////////////////////////////////////////
