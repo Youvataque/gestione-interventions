@@ -206,8 +206,8 @@ class _ClimTemplateState extends State<ClimTemplate> {
     ];
 
     return PdfButton(
-      child: body(),
-      clientName: getNameFromInter(widget.clientId)
+      clientName: getNameFromInter(widget.clientId),
+      child: body()
     );
   }
 
