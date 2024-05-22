@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -28,17 +29,28 @@ class _PdfButtonState extends State<PdfButton> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Screenshot(
-            controller: screenshotController,
-            child: widget.child
+    return Stack(
+      children: [
+        Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Screenshot(
+                  controller: screenshotController,
+                  child: widget.child
+                ),
+                button(),
+                const Gap(40),
+              ],
+            ),
           ),
-          button(),
-          const Gap(40),
-        ],
-      ),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.2,
+          color: Colors.transparent,
+        ),
+      ],
     );
   }
 
